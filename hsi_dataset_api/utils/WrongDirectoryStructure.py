@@ -1,0 +1,2 @@
+class WrongDirectoryStructure(RuntimeError):
+    pass

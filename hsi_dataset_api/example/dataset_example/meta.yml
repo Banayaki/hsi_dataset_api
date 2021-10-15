@@ -1,0 +1,8 @@
+name: HSI Dataset example
+description: Some additional info about dataset
+source: URL
+images: 10
+classes:
+  - {name: background, label: 0}
+  - {name: crops, label: 1}
+  - {name: tree, label: 2}
