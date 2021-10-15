@@ -1,7 +1,7 @@
 # Install
 
 ```bash
-pip3 install git+https://gitlab+deploy-token-608170:j7p2ZQZKgxuuEQVBHxPL@gitlab.com/Banayaki/hsi_dataset_api.git
+pip install git+https://gitlab+deploy-token-608170:j7p2ZQZKgxuuEQVBHxPL@gitlab.com/rustam-industries/hsi_dataset_api.git
 ```
 
 # Dataset structure
