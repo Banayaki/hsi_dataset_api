@@ -9,18 +9,11 @@ Dataset should be stored in the following structure:
 
 <pre>
 {dataset_name}
-├── train
-│   ├── hsi
-│   │   ├── 1.npy
-│   │   └── 1.yml
-│   └── masks
-│   │   └── 1.png
-├── test
-│   ├── hsi
-│   │   ├── 1.npy
-│   │   └── 1.yml
-│   └── masks
-│   │   └── 1.png
+├── hsi
+│   ├── 1.npy
+│   └── 1.yml
+├── masks
+│   └── 1.png
 └── meta.yaml
 </pre>
 
@@ -60,22 +53,42 @@ Example of using the API can be found in `test/test_dataset.py` file
 ## Importing
 
 ```python
-from hsi_dataset_api import HsiDataset
+from hsi_dataset_api import HsiDataset, HsiDataCropper
 ```
 
-## Create Data Access Object
+## Cropping the data
+
+```python
+base_path = '/mnt/data/corrected_hsi_data'
+output_path = '/mnt/data/cropped_hsi_data'
+classes = ['potato', 'tomato']
+selected_folders = ['HSI_1', 'HSI_2']  # Completely optional
+
+cropper = HsiDataCropper(side_size=512, step=8, objects_ratio=0.20, min_class_ratio=0.01)
+cropper.crop(base_path, output_path, classes, selected_folders)
+```
+
+## Plot cropped data statistics
+
+```python
+cropper.draw_statistics()
+```
+
+## Using the data
+
+### Create Data Access Object
 ```python
 dataset = HsiDataset('../example/dataset_example')
 ```
 
-## Getting the dataset meta information
+### Getting the dataset meta information
 ```python
 dataset.get_dataset_description()
 ```
 
-## Getting the shuffled train data using python generator
+### Getting the shuffled train data using python generator
 ```python
-for data_point in dataset.data_iterator(opened=True, train=True, shuffled=True):
+for data_point in dataset.data_iterator(opened=True, shuffle=True):
     hyperspecter = data_point.hsi
     mask = data_point.mask
     meta = data_point.meta
