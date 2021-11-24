@@ -61,10 +61,12 @@ class HsiDataCropper:
     def draw_statistics(self, output_filename: Optional[str] = None, print_values: bool = False):
         fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8))
         ax1.bar(range(len(self.classes2quantity.values())), list(self.classes2quantity.values()))
-        ax1.set_xticklabels(range(len(self.classes2quantity.values())), list(self.classes2quantity.keys()), rotation=90)
+        ax1.set_xticks(range(len(self.classes2quantity.values())))
+        ax1.set_xticklabels(list(self.classes2quantity.keys()), rotation=90)
 
         ax2.bar(range(len(self.classes2quantity.values())), list(self.classes2area.values()))
-        ax2.set_xticklabels(range(len(self.classes2quantity.values())), list(self.classes2area.keys()), rotation=90)
+        ax2.set_xticklabels(range(len(self.classes2quantity.values())))
+        ax2.set_xticklabels(list(self.classes2area.keys()), rotation=90)
 
         if print_values:
             for i, v in enumerate(self.classes2quantity.values()):
@@ -74,9 +76,9 @@ class HsiDataCropper:
         ax1.set_ylabel('Number of images')
         ax1.set_title('Number of images containing class')
 
-        ax1.set_xlabel('Classes')
-        ax1.set_ylabel('Number of pixels')
-        ax1.set_title('Number of pixels containing class')
+        ax2.set_xlabel('Classes')
+        ax2.set_ylabel('Number of pixels')
+        ax2.set_title('Number of pixels containing class')
 
         if output_filename is not None:
             fig.savefig(f'{output_filename}.svg')
