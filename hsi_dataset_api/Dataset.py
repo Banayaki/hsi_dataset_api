@@ -54,7 +54,7 @@ class HsiDataset:
 
     def _read_yml(self, path):
         with open(path, 'r') as f:
-            return yaml.load(f)
+            return yaml.full_load(f)
 
     def _read_dataset_description(self):
         return self._read_yml(os.path.join(self.path_to_dataset, 'meta.yml'))
