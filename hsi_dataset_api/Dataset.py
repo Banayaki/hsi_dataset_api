@@ -18,19 +18,26 @@ class HsiDatapoint:
 
 
 class HsiDataset:
-    def __init__(self, path_to_dataset: str) -> None:
+    def __init__(self, path_to_dataset: str, cropped_dataset: bool = False) -> None:
         """
-
-        :param path_to_dataset:
+        :param path_to_dataset: path to the root folder of the dataset
+        :param cropped_dataset: cropped dataset stores into a different structure, where an additional level of folders
+        are exist.
         """
         self._check_folder_structure(path_to_dataset)
         self.path_to_dataset = path_to_dataset
 
         self.dataset_description = self._read_dataset_description()
 
-        self.hsi_filenames = sorted(glob.glob(os.path.join(self.path_to_dataset, 'hsi', '*', '*.npy')))
-        self.meta_hsi_filenames = sorted(glob.glob(os.path.join(self.path_to_dataset, 'hsi', '*', '*.yml')))
-        self.masks_filenames = sorted(glob.glob(os.path.join(self.path_to_dataset, 'masks', '*', '*.png')))
+        if cropped_dataset:
+            self.hsi_filenames = sorted(glob.glob(os.path.join(self.path_to_dataset, 'hsi', '*', '*.npy')))
+            self.meta_hsi_filenames = sorted(glob.glob(os.path.join(self.path_to_dataset, 'hsi', '*', '*.yml')))
+            self.masks_filenames = sorted(glob.glob(os.path.join(self.path_to_dataset, 'masks', '*', '*.png')))
+        else:
+            self.hsi_filenames = sorted(glob.glob(os.path.join(self.path_to_dataset, 'hsi', '*.npy')))
+            self.meta_hsi_filenames = sorted(glob.glob(os.path.join(self.path_to_dataset, 'hsi', '*.yml')))
+            self.masks_filenames = sorted(glob.glob(os.path.join(self.path_to_dataset, 'masks', '*.png')))
+
         self.set_length = len(self.hsi_filenames)
 
     def _check_folder_structure(self, path_to_dataset: str):

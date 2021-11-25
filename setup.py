@@ -4,7 +4,7 @@ import setuptools
 setup(
     name='HSI_Dataset_API',
     packages=setuptools.find_packages(),
-    version='1.3.0',
+    version='1.4.0',
     description='...',
     long_description='...',
     author='Mukhin Artem',

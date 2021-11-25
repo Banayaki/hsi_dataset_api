@@ -7,6 +7,8 @@ pip install git+https://gitlab+deploy-token-608170:j7p2ZQZKgxuuEQVBHxPL@gitlab.c
 # Dataset structure
 Dataset should be stored in the following structure:
 
+## Plain structure (#1)
+
 <pre>
 {dataset_name}
 ├── hsi
@@ -14,6 +16,30 @@ Dataset should be stored in the following structure:
 │   └── 1.yml
 ├── masks
 │   └── 1.png
+└── meta.yaml
+</pre>
+
+Or in structure like this (such structure was created while using data cropping)
+
+## Cropped data structure (#2)
+
+<pre>
+{dataset_name}
+├── hsi
+│   ├── specter_1
+│   │   ├── 1.npy
+│   │   ├── 1.yml
+│   │   ├── 2.npy
+│   │   └── 2.yml
+│   └── specter_2
+│       ├── 1.npy
+│       └── 1.yml
+├── masks
+│   ├── specter_1
+│   │   ├── 1.png
+│   │   └── 2.png
+│   └── specter_2
+│       └── 1.png
 └── meta.yaml
 </pre>
 
@@ -78,8 +104,11 @@ cropper.draw_statistics()
 
 ### Create Data Access Object
 ```python
-dataset = HsiDataset('../example/dataset_example')
+dataset = HsiDataset('../example/dataset_example', cropped_dataset=False)
 ```
+
+Parameter `cropped_dataset` controls type of the dataset structure. If the dataset persist in the memory in
+the structure like **second** **(#2)** - set this parameter to `True`
 
 ### Getting the dataset meta information
 ```python
@@ -94,3 +123,4 @@ for data_point in dataset.data_iterator(opened=True, shuffle=True):
     meta = data_point.meta
 ```
 
+# See examples in the folder `examples`
