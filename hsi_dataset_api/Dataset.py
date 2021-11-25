@@ -52,12 +52,6 @@ class HsiDataset:
         if len(set(os.listdir(path_to_dataset)) - required_files) != 0:
             raise WrongDirectoryStructure(msg + f"In {path_to_dataset}")
 
-        hsi_data_path = os.path.join(path_to_dataset, 'hsi', '*', '*.npy')
-        masks_data_path = os.path.join(path_to_dataset, 'masks', '*', '*.png')
-
-        if len(glob.glob(hsi_data_path)) != len(glob.glob(masks_data_path)):
-            raise WrongDirectoryStructure(f'Number of HSIs and masks are not equal in folder {path_to_dataset}')
-
     def _read_yml(self, path):
         with open(path, 'r') as f:
             return yaml.load(f)

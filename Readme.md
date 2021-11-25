@@ -51,12 +51,14 @@ For example:
 ```yaml
 name: HSI Dataset example
 description: Some additional info about dataset
-source: URL
-images: 10
 classes:
-- {name: background, label: 0}
-- {name: crops, label: 1}
-- {name: tree, label: 2}
+  cat: 1
+  dog: 2
+  car: 3
+wave_lengths:
+- 420.0
+- 640.0
+- 780.0 
 ```
 
 # {number}.yml
@@ -65,10 +67,15 @@ In this file you can store HSI specific information such as date, name of humidi
 For example:
 
 ```yaml
-data: 10-10-2021-10:10
-name: SalinasValley
-humidity: 45
-temperature: 30
+classes:
+  - potato
+height: 512
+width: 512
+layersCount: 237
+original_filename: '210730_134940_'
+top_left:
+  - 0
+  - 0
 ```
 
 # Python API
