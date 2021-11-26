@@ -18,7 +18,7 @@ class HsiDatapoint:
 
 
 class HsiDataset:
-    def __init__(self, path_to_dataset: str, cropped_dataset: bool = False) -> None:
+    def __init__(self, path_to_dataset: str, cropped_dataset: bool = True) -> None:
         """
         :param path_to_dataset: path to the root folder of the dataset
         :param cropped_dataset: cropped dataset stores into a different structure, where an additional level of folders

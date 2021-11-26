@@ -1,8 +1,13 @@
 # Install
 
 ```bash
-pip install git+https://gitlab+deploy-token-608170:j7p2ZQZKgxuuEQVBHxPL@gitlab.com/rustam-industries/hsi_dataset_api.git
+pip install HSI-Dataset-API
 ```
+
+# Links to the available HSI datasets
+
+* Nextcloud: [HSI Dataset v1.zip](https://u.to/WvHHGw)
+* Google Drive: [HSI Dataset v1.zip](https://u.to/XvHHGw)
 
 # Dataset structure
 Dataset should be stored in the following structure:
@@ -81,8 +86,6 @@ top_left:
 # Python API
 Via API presented in this repo you can access the dataset.
 
-Example of using the API can be found in `test/test_dataset.py` file
-
 ## Importing
 
 ```python
@@ -130,4 +133,15 @@ for data_point in dataset.data_iterator(opened=True, shuffle=True):
     meta = data_point.meta
 ```
 
-# See examples in the folder `examples`
+# Examples
+
+See jupyter notebook example by the following link:
+
+https://nbviewer.org/github/Banayaki/hsi_dataset_api/blob/master/examples/ClassificationMLP.ipynb
+
+
+# Source code
+
+Source code is available: 
+
+https://github.com/Banayaki/hsi_dataset_api
