@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
     name='HSI_Dataset_API',
     packages=setuptools.find_packages(),
-    version='1.4.8',
+    version='1.4.9',
     description='API for accessing HSI datasets',
     long_description=long_description,
     long_description_content_type="text/markdown",

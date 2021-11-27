@@ -111,7 +111,7 @@ class HsiDataCropper:
                     if _cls in fname:
                         image = cv2.imread(os.path.join(path_to_data, fname))
                         class_mask = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) > threshold
-                        class_masks.append(class_mask)
+                        class_masks.append(class_mask.copy())
                         has_classes.append(_cls)
                         if mask is None:
                             mask = class_mask
@@ -133,26 +133,23 @@ class HsiDataCropper:
             matrix = np.zeros((nh, nw))
             class_matrices = np.zeros((len(has_classes), nh, nw))
 
-            class_masks = np.array(class_masks)
+            class_masks = np.array(class_masks, dtype=np.bool)
             numba_find_crop_areas_loop(mask, class_masks, self.objects_ratio, self.min_class_ratio, matrix,
-                                       class_matrices, nh, nw, STEP,
-                                       PART_SIZE)
+                                       class_matrices, nh, nw, STEP, PART_SIZE)
 
             crop_counter = 0
 
             for iy in range(matrix.shape[0]):
                 for ix in range(matrix.shape[1]):
                     part_has_class = []
-                    matrix_part = matrix[iy: iy + PART_SIZE // STEP, ix: ix + PART_SIZE // STEP]
-                    if np.all(matrix_part):
+                    if matrix[iy, ix]:
                         # print(folder_name, ': Taking', (iy, ix), 'position for specter')
                         matrix[iy: iy + PART_SIZE // STEP, ix: ix + PART_SIZE // STEP] = False
                         part = specter[:, iy * STEP: iy * STEP + PART_SIZE, ix * STEP: ix * STEP + PART_SIZE]
                         mask = np.zeros(part.shape[1:], dtype=np.uint8)
 
                         for idx, _cls in enumerate(has_classes):
-                            class_matrix = class_matrices[idx, iy: iy + PART_SIZE // STEP, ix: ix + PART_SIZE // STEP]
-                            if np.all(class_matrix):
+                            if class_matrices[idx, iy, ix]:
                                 class_part = class_masks[idx, iy * STEP: iy * STEP + PART_SIZE, ix * STEP: ix * STEP + PART_SIZE]
                                 if save_statistics:
                                     self.classes2quantity[_cls] += 1
