@@ -153,7 +153,7 @@ class HsiDataCropper:
                         for idx, _cls in enumerate(has_classes):
                             class_part = class_masks[idx, iy * STEP: iy * STEP + PART_SIZE,
                                          ix * STEP: ix * STEP + PART_SIZE]
-                            if np.any(class_part):
+                            if np.sum(class_part) > self.min_class_ratio:
                                 if save_statistics:
                                     self.classes2quantity[_cls] += 1
                                     self.classes2area[_cls] += np.sum(class_part)
@@ -161,21 +161,22 @@ class HsiDataCropper:
                                 class_value = classes.index(_cls) + 1
                                 mask[iy * STEP: iy * STEP + PART_SIZE, ix * STEP: ix * STEP + PART_SIZE] = class_value
 
-                        os.makedirs(os.path.join(specters_output_path, folder_name), exist_ok=True)
-                        os.makedirs(os.path.join(masks_output_path, folder_name), exist_ok=True)
-                        np.save(os.path.join(specters_output_path, folder_name, f'{crop_counter}.npy'), part)
-                        cv2.imwrite(os.path.join(masks_output_path, folder_name, f'{crop_counter}.png'), mask)
+                        if len(part_has_class) != 0:
+                            os.makedirs(os.path.join(specters_output_path, folder_name), exist_ok=True)
+                            os.makedirs(os.path.join(masks_output_path, folder_name), exist_ok=True)
+                            np.save(os.path.join(specters_output_path, folder_name, f'{crop_counter}.npy'), part)
+                            cv2.imwrite(os.path.join(masks_output_path, folder_name, f'{crop_counter}.png'), mask)
 
-                        meta_info = {}
-                        meta_info['original_filename'] = folder_name
-                        meta_info['height'] = PART_SIZE
-                        meta_info['width'] = PART_SIZE
-                        meta_info['layersCount'] = part.shape[0]
-                        meta_info['top_left'] = [iy * STEP, ix * STEP]
-                        meta_info['classes'] = part_has_class
-                        # meta_info['classes_distribution_images'] = self.classes2quantity
-                        # meta_info['classes_distribution_pixels'] = self.classes2area
+                            meta_info = {}
+                            meta_info['original_filename'] = folder_name
+                            meta_info['height'] = PART_SIZE
+                            meta_info['width'] = PART_SIZE
+                            meta_info['layersCount'] = part.shape[0]
+                            meta_info['top_left'] = [iy * STEP, ix * STEP]
+                            meta_info['classes'] = part_has_class
+                            # meta_info['classes_distribution_images'] = self.classes2quantity
+                            # meta_info['classes_distribution_pixels'] = self.classes2area
 
-                        with open(os.path.join(specters_output_path, folder_name, f'{crop_counter}.yml'), 'w') as f:
-                            yaml.dump(meta_info, f)
-                        crop_counter += 1
+                            with open(os.path.join(specters_output_path, folder_name, f'{crop_counter}.yml'), 'w') as f:
+                                yaml.dump(meta_info, f)
+                            crop_counter += 1
