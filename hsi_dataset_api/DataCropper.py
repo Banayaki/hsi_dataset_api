@@ -65,7 +65,7 @@ class HsiDataCropper:
         ax1.set_xticklabels(list(self.classes2quantity.keys()), rotation=90)
 
         ax2.bar(range(len(self.classes2quantity.values())), list(self.classes2area.values()))
-        ax2.set_xticklabels(range(len(self.classes2quantity.values())))
+        ax2.set_xticks(range(len(self.classes2quantity.values())))
         ax2.set_xticklabels(list(self.classes2area.keys()), rotation=90)
 
         if print_values:
@@ -159,7 +159,7 @@ class HsiDataCropper:
                                     self.classes2area[_cls] += np.sum(class_part)
                                 part_has_class.append(_cls)
                                 class_value = classes.index(_cls) + 1
-                                mask[iy * STEP: iy * STEP + PART_SIZE, ix * STEP: ix * STEP + PART_SIZE] = class_value
+                                mask[class_part] = class_value
 
                         if len(part_has_class) != 0:
                             os.makedirs(os.path.join(specters_output_path, folder_name), exist_ok=True)
