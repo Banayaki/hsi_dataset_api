@@ -151,9 +151,9 @@ class HsiDataCropper:
                         mask = np.zeros(part.shape[1:], dtype=np.uint8)
 
                         for idx, _cls in enumerate(has_classes):
-                            class_part = class_masks[idx, iy * STEP: iy * STEP + PART_SIZE,
-                                         ix * STEP: ix * STEP + PART_SIZE]
-                            if np.sum(class_part) > self.min_class_ratio:
+                            class_matrix = class_matrices[idx, iy: iy + PART_SIZE // STEP, ix: ix + PART_SIZE // STEP]
+                            if np.all(class_matrix):
+                                class_part = class_masks[idx, iy * STEP: iy * STEP + PART_SIZE, ix * STEP: ix * STEP + PART_SIZE]
                                 if save_statistics:
                                     self.classes2quantity[_cls] += 1
                                     self.classes2area[_cls] += np.sum(class_part)
