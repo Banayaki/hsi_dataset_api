@@ -142,6 +142,7 @@ class HsiDataCropper:
 
             for iy in range(matrix.shape[0]):
                 for ix in range(matrix.shape[1]):
+                    part_has_class = []
                     matrix_part = matrix[iy: iy + PART_SIZE // STEP, ix: ix + PART_SIZE // STEP]
                     if np.all(matrix_part):
                         # print(folder_name, ': Taking', (iy, ix), 'position for specter')
@@ -156,10 +157,9 @@ class HsiDataCropper:
                                 if save_statistics:
                                     self.classes2quantity[_cls] += 1
                                     self.classes2area[_cls] += np.sum(class_part)
-
-                            class_value = classes.index(_cls) + 1
-                            class_part[class_part is True] = class_value
-                            mask += class_part
+                                part_has_class.append(_cls)
+                                class_value = classes.index(_cls) + 1
+                                mask[iy * STEP: iy * STEP + PART_SIZE, ix * STEP: ix * STEP + PART_SIZE] = class_value
 
                         os.makedirs(os.path.join(specters_output_path, folder_name), exist_ok=True)
                         os.makedirs(os.path.join(masks_output_path, folder_name), exist_ok=True)
@@ -172,7 +172,7 @@ class HsiDataCropper:
                         meta_info['width'] = PART_SIZE
                         meta_info['layersCount'] = part.shape[0]
                         meta_info['top_left'] = [iy * STEP, ix * STEP]
-                        meta_info['classes'] = has_classes
+                        meta_info['classes'] = part_has_class
                         # meta_info['classes_distribution_images'] = self.classes2quantity
                         # meta_info['classes_distribution_pixels'] = self.classes2area
 
