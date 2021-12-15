@@ -6,8 +6,8 @@ pip install HSI-Dataset-API
 
 # Links to the available HSI datasets
 
-* Nextcloud: [HSI Dataset v1.2.zip](https://u.to/jATJGw)
-* Google Drive: [HSI Dataset v1.2.zip](https://u.to/hATJGw)
+* Nextcloud: [HSI Dataset v1.21.zip](https://tinyurl.com/2p8ddssb)
+* Google Drive: [HSI Dataset v1.21.zip](https://tinyurl.com/2p89f4vb)
 
 # Dataset structure
 Dataset should be stored in the following structure:
