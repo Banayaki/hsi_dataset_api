@@ -58,6 +58,15 @@ class HsiDataCropper:
         self.classes2quantity = {_cls: 0 for _cls in classes}
         self.classes2area = {_cls: 0 for _cls in classes}
 
+    @staticmethod
+    def preprocess_mask(mask):
+        kernel = np.ones((2,2),np.uint8)
+
+        erosion = cv2.erode(mask, kernel, iterations = 1)
+        dilation = cv2.dilate(erosion, kernel,iterations = 4)
+        mask_filtered = cv2.erode(dilation, kernel, iterations = 1)
+        return mask_filtered
+
     def draw_statistics(self, output_filename: Optional[str] = None, print_values: bool = False):
         fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(16, 8))
         ax1.bar(range(len(self.classes2quantity.values())), list(self.classes2quantity.values()))
@@ -84,7 +93,7 @@ class HsiDataCropper:
             fig.savefig(f'{output_filename}.svg')
 
     def crop(self, base_path: str, output_path: str, classes: List[str], selected_folders: Optional[List[str]] = None,
-             save_statistics: bool = False, threshold: int = 128):
+             save_statistics: bool = False, threshold: int = 128, morphology_preprocessing: bool = False):
         self._reset(classes)
         STEP = self.step
         PART_SIZE = self.side_size
@@ -110,7 +119,9 @@ class HsiDataCropper:
                 for _cls in classes:
                     if _cls in fname:
                         image = cv2.imread(os.path.join(path_to_data, fname))
-                        class_mask = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) > threshold
+                        class_mask = np.array(cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) > threshold, dtype=np.uint8)
+                        if morphology_preprocessing:
+                            class_mask = HsiDataCropper.preprocess_mask(class_mask)
                         class_masks.append(class_mask.copy())
                         has_classes.append(_cls)
                         if mask is None:
